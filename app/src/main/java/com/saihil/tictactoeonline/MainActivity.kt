@@ -7,79 +7,95 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var boardButtons: Array<Button>
-    private var board = Array(9) { "" }
+    private lateinit var board: Array<Array<Button>>
     private var currentPlayer = "X"
-    private var gameActive = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main) // XML layout
+        setContentView(R.layout.activity_main)
 
-        // Initialize buttons array
-        boardButtons = Array(9) { i ->
-            val id = resources.getIdentifier("button$i", "id", packageName)
-            findViewById<Button>(id)
+        // Initialize the 3x3 board
+        board = Array(3) { row ->
+            Array(3) { col ->
+                val buttonId = resources.getIdentifier("button$row$col", "id", packageName)
+                findViewById<Button>(buttonId).apply {
+                    setOnClickListener { onCellClicked(this, row, col) }
+                }
+            }
         }
 
-        // Set click listeners for each button
-        boardButtons.forEachIndexed { i, button ->
-            button.setOnClickListener { playTurn(i) }
-        }
-
-        // Reset button listener
-        findViewById<Button>(R.id.resetButton).setOnClickListener {
-            resetGame()
-        }
+        // Reset button
+        val resetButton = findViewById<Button>(R.id.buttonReset)
+        resetButton.setOnClickListener { resetBoard() }
     }
 
-    private fun playTurn(index: Int) {
-        if (!gameActive || board[index].isNotEmpty()) return
+    private fun onCellClicked(button: Button, row: Int, col: Int) {
+        if (button.text.isNotEmpty()) return
 
-        board[index] = currentPlayer
-        boardButtons[index].text = currentPlayer
+        button.text = currentPlayer
 
-        if (checkWin()) {
-            Toast.makeText(this, "Player $currentPlayer wins!", Toast.LENGTH_LONG).show()
-            gameActive = false
+        if (checkWinner()) {
+            Toast.makeText(this, "Player $currentPlayer wins!", Toast.LENGTH_SHORT).show()
             disableBoard()
-            return
-        }
-
-        if (board.all { it.isNotEmpty() }) {
-            Toast.makeText(this, "It's a Draw!", Toast.LENGTH_LONG).show()
-            gameActive = false
-            return
-        }
-
-        // Switch player
-        currentPlayer = if (currentPlayer == "X") "O" else "X"
-        Toast.makeText(this, "Player $currentPlayer's turn", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun checkWin(): Boolean {
-        val winningPositions = arrayOf(
-            intArrayOf(0,1,2), intArrayOf(3,4,5), intArrayOf(6,7,8),
-            intArrayOf(0,3,6), intArrayOf(1,4,7), intArrayOf(2,5,8),
-            intArrayOf(0,4,8), intArrayOf(2,4,6)
-        )
-        return winningPositions.any { (a,b,c) ->
-            board[a].isNotEmpty() && board[a] == board[b] && board[b] == board[c]
+        } else if (isBoardFull()) {
+            Toast.makeText(this, "It's a draw!", Toast.LENGTH_SHORT).show()
+        } else {
+            currentPlayer = if (currentPlayer == "X") "O" else "X"
         }
     }
 
-    private fun resetGame() {
-        board.fill("")
-        boardButtons.forEach {
-            it.text = ""
-            it.isEnabled = true
+    private fun checkWinner(): Boolean {
+        // Check rows and columns
+        for (i in 0..2) {
+            if (board[i][0].text == currentPlayer &&
+                board[i][1].text == currentPlayer &&
+                board[i][2].text == currentPlayer
+            ) return true
+
+            if (board[0][i].text == currentPlayer &&
+                board[1][i].text == currentPlayer &&
+                board[2][i].text == currentPlayer
+            ) return true
         }
-        currentPlayer = "X"
-        gameActive = true
-        Toast.makeText(this, "Game Reset. Player X starts!", Toast.LENGTH_SHORT).show()
+
+        // Check diagonals
+        if (board[0][0].text == currentPlayer &&
+            board[1][1].text == currentPlayer &&
+            board[2][2].text == currentPlayer
+        ) return true
+
+        if (board[0][2].text == currentPlayer &&
+            board[1][1].text == currentPlayer &&
+            board[2][0].text == currentPlayer
+        ) return true
+
+        return false
+    }
+
+    private fun isBoardFull(): Boolean {
+        for (row in board) {
+            for (cell in row) {
+                if (cell.text.isEmpty()) return false
+            }
+        }
+        return true
     }
 
     private fun disableBoard() {
-        boardButtons.forEach { it.isEnabled = false }
+        for (row in board) {
+            for (cell in row) {
+                cell.isEnabled = false
+            }
+        }
+    }
+
+    private fun resetBoard() {
+        for (row in board) {
+            for (cell in row) {
+                cell.text = ""
+                cell.isEnabled = true
+            }
+        }
+        currentPlayer = "X"
     }
 }
