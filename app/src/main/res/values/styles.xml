@@ -1,9 +1,0 @@
-<resources>
-    <style name="CellButton">
-        <item name="android:layout_width">100dp</item>
-        <item name="android:layout_height">100dp</item>
-        <item name="android:textSize">32sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
-    </style>
-</resources>
