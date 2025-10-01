@@ -1,42 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="❌⭕ Tic Tac Toe"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
-
+    <!-- 3x3 Grid -->
     <GridLayout
         android:id="@+id/gridLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rowCount="3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:columnCount="3"
-        android:layout_marginBottom="20dp">
+        android:rowCount="3"
+        android:alignmentMode="alignMargins"
+        android:rowOrderPreserved="false"
+        android:useDefaultMargins="true">
 
-        <Button android:id="@+id/button0" style="@style/CellButton"/>
-        <Button android:id="@+id/button1" style="@style/CellButton"/>
-        <Button android:id="@+id/button2" style="@style/CellButton"/>
-        <Button android:id="@+id/button3" style="@style/CellButton"/>
-        <Button android:id="@+id/button4" style="@style/CellButton"/>
-        <Button android:id="@+id/button5" style="@style/CellButton"/>
-        <Button android:id="@+id/button6" style="@style/CellButton"/>
-        <Button android:id="@+id/button7" style="@style/CellButton"/>
-        <Button android:id="@+id/button8" style="@style/CellButton"/>
+        <Button
+            android:id="@+id/button00"
+            style="@style/CellButton"/>
+        <Button
+            android:id="@+id/button01"
+            style="@style/CellButton"/>
+        <Button
+            android:id="@+id/button02"
+            style="@style/CellButton"/>
+
+        <Button
+            android:id="@+id/button10"
+            style="@style/CellButton"/>
+        <Button
+            android:id="@+id/button11"
+            style="@style/CellButton"/>
+        <Button
+            android:id="@+id/button12"
+            style="@style/CellButton"/>
+
+        <Button
+            android:id="@+id/button20"
+            style="@style/CellButton"/>
+        <Button
+            android:id="@+id/button21"
+            style="@style/CellButton"/>
+        <Button
+            android:id="@+id/button22"
+            style="@style/CellButton"/>
+
     </GridLayout>
 
+    <!-- Reset Button -->
     <Button
-        android:id="@+id/resetButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonReset"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reset Game"/>
+        android:text="Reset Board"
+        android:layout_marginTop="16dp"/>
+
 </LinearLayout>
