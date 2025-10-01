@@ -36,7 +36,7 @@ android {
         jvmTarget = "11"
     }
 
-    // Enable ViewBinding for XML views
+    // Enable ViewBinding for XML-based layouts
     buildFeatures {
         viewBinding = true
     }
